@@ -1,0 +1,7 @@
+django
+pandas
+numpy
+scipy
+Pillow
+thumbnail
+sorl-thumbnail

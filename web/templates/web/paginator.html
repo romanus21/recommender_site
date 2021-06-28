@@ -1,0 +1,29 @@
+{% if page.has_other_pages %}
+  <nav>
+    <ul class="pagination">
+      {% if page.has_previous %}
+        <li class="page-item">
+          <a
+            class="page-link"
+            href="?page={{ page.previous_page_number }}&q={{ q }}">&laquo; Предыдущая</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <span class="page-link">&laquo; Предыдущая</span>
+        </li>
+      {% endif %}
+
+      {% if page.has_next %}
+        <li class="page-item">
+          <a
+            class="page-link"
+            href="?page={{ page.next_page_number }}&q={{ q }}">Следующая &raquo;</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <span class="page-link">Следующая &raquo;</span>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}
