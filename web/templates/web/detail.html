@@ -23,6 +23,7 @@
             <!-- Right Movie Info -->
             <div class="col-sm-offset-1 col-sm-4 col-md-4">
                 <h1>{{ movie.title }}</h1>
+                <h3><small>Overview: {{ movie.overview }}</small></h3>
                 <h3><small>{{ movie.genre }}</small></h3>
                 <h3><small>Please rate to get recommendation</small></h3>
                 {% if messages %}
@@ -56,7 +57,8 @@
                                                   data-rating="5"></span>
                                             <input class="rating-value"
                                                    name="rating"
-                                                   type="hidden" value={{ rating }}>
+                                                   type="hidden"
+                                                   value={{ rating }}>
                                             {% csrf_token %}
 
                                         </div>
@@ -67,11 +69,34 @@
                             </div>
                         </div>
                     </form>
-
                 </div>
             </div>
+            <div class="col-sm-12">
+                <h1>Похоже фильмы: </h1>
+                {% for rmovie in rec_movies %}
+                        <div class="col-sm-2 col-md-2 ">
+                            <div class="thumbnail">
+                                <a href="{% url 'detail' rmovie.id %}">
+                                    <h4>{{ rmovie.title }}</h4></a>
+                                <a href="{% url 'detail' rmovie.id %}">
+                                    <img class="img-responsive"
+                                         src="{{ rmovie.movie_logo.url }}">
+                                </a>
+                                <h5>{{ rmovie.genre }}</h5>
+                                <div class="caption">
+
+                                    <!-- View Details -->
+                                    <a class="btn btn-primary btn-sm"
+                                       href="{% url 'detail' rmovie.id %}"
+                                       role="button">Give
+                                        Rating</a>
 
 
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+            </div>
         </div>
     </div>
 

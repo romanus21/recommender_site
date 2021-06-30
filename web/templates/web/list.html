@@ -9,9 +9,9 @@
                         <input class="form-control input-lg " name="q"
                                placeholder="Search Movies "
                                type="text"
-                               {% if request.GET.q and request.GET.q != 'None'%}
+                                {% if request.GET.q and request.GET.q != 'None' %}
                                value="{{ request.GET.q }}"
-                               {% endif %}/>
+                                {% endif %}/>
                         <span class='input-group-btn'>
 
              <button class='btn btn-info btn-lg' type='submit'>Search
@@ -51,7 +51,8 @@
                 {% for movie in page %}
                     <div class="col-sm-2 col-md-2 ">
                         <div class="thumbnail">
-                            <h4>{{ movie.title }}</h4>
+                            <a href="{% url 'detail' movie.id %}">
+                                <h4>{{ movie.title }}</h4></a>
                             <a href="{% url 'detail' movie.id %}">
                                 <img class="img-responsive"
                                      src="{{ movie.movie_logo.url }}">

@@ -1,7 +1,7 @@
 django
+django_pandas
 pandas
 numpy
-scipy
+scikit-learn
 Pillow
-thumbnail
 sorl-thumbnail

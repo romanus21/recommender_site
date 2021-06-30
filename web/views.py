@@ -8,9 +8,10 @@ from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
 
 from mymdb.settings import FILMS_ON_PAGE
+from .content_based_rec import get_recommendations
 from .forms import UserForm
 from .models import Movie, Rating
-from .recs import make_recommendation
+from .user_based_rec import make_recommendation
 
 
 def recommend(request):
@@ -21,7 +22,6 @@ def recommend(request):
         raise Http404
 
     current_user_id = request.user.id
-    print("Current user id: ", current_user_id)
     user_rates = Rating.objects.all()
     id_list = make_recommendation(user_ID=current_user_id,
                                   user_rates=user_rates)
@@ -62,30 +62,29 @@ def detail(request, movie_id):
     if not request.user.is_active:
         raise Http404
     movie = get_object_or_404(Movie, id=movie_id)
+    id_list = get_recommendations(movie.title)
+    rec_movies = list(
+        Movie.objects.filter(id__in=id_list))
     if request.method == "POST":
-        if Rating.objects.filter(user=request.user, movie=movie).exists():
-            rate = request.POST['rating']
+        if not Rating.objects.filter(user=request.user, movie=movie).exists():
+            rating_object = Rating()
+            rating_object.user = request.user
+            rating_object.movie = movie
+        else:
             rating_object = get_object_or_404(Rating, movie=movie,
                                               user=request.user)
-            rating_object.rating = rate
-            rating_object.save()
-            messages.success(request, "Your Rating is submitted")
-            return redirect("index")
         rate = request.POST['rating']
-        rating_object = Rating()
-        rating_object.user = request.user
-        rating_object.movie = movie
         rating_object.rating = rate
         rating_object.save()
         messages.success(request, "Your Rating is submitted")
-        return redirect("index")
+        return redirect('detail', movie_id=movie.id)
     if Rating.objects.filter(user=request.user, movie=movie).exists():
         rating = get_object_or_404(Rating, movie=movie,
                                    user=request.user).rating
     else:
         rating = 0
     return render(request, 'web/detail.html',
-                  {'movie': movie, 'rating': rating})
+                  {'movie': movie, 'rating': rating, 'rec_movies': rec_movies})
 
 
 def signUp(request):

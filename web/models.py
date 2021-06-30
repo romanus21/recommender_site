@@ -6,6 +6,7 @@ from django.db import models
 class Movie(models.Model):
     title = models.CharField(max_length=200)
     genre = models.CharField(max_length=200)
+    overview = models.TextField(null=True, blank=True)
     movie_logo = models.ImageField(upload_to='', blank=True, null=True)
 
     class Meta:

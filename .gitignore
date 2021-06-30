@@ -1,3 +1,6 @@
 .idea
 venv
 csvs
+web/static/*
+media
+*/migrations
